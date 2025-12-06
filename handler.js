@@ -113,6 +113,12 @@ module.exports = async (kiicode, m) => {
     const isBotAdmins = isGroup ? groupAdmins.includes(botNumber) : false
     const isAdmins = isGroup ? groupAdmins.includes(sender) : false
 
+    if (isGroup) {
+      db.groups[idGroup] = db.groups[idGroup] || {}
+      const isMuted = db.groups[idGroup].mute || false
+      if (isMuted && !isAdmins && sender !== `${owner}@s.whatsapp.net`) return
+    }
+
     if (!db.users[idUser]) {
       db.users[idUser] = {
         id: idUser,
